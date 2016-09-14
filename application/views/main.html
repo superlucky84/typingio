@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html ng-app="superlucky">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>SUPERLUCKY</title>
+
+
+
+<script src="/asset/js/jquery-2.1.3.js?v=<?php echo $version?>"></script>
+<script src="/asset/js/bootstrap.js?v=<?php echo $version?>"></script>
+<script src="/asset/js/angular.js?v=<?php echo $version?>"></script>
+<script src="/asset/js/ui_bootstrap.js?v=<?php echo $version?>"></script>
+<script src="/asset/js/angular-animate.js?v=<?php echo $version?>"></script>
+
+
+<link rel="stylesheet" type="text/css" href="/asset/css/bootstrap.css?v=<?php echo $version?>" />
+<link rel="stylesheet" type="text/css" href="/asset/css/main.css?v=<?php echo $version?>" />
+<link rel="stylesheet" type="text/css" href="/asset/css/typing.css" />
+
+
+
+<script>
+	var superlucky = angular.module('superlucky', ['ngAnimate','ui.bootstrap']);
+
+	// enter Event
+	superlucky.directive('ngEsc', function () {
+		return function (scope, element, attrs) {
+			element.bind("keydown keypress", function (event) {
+				if(event.which === 27) {
+					scope.$apply(function (){
+						scope.$eval(attrs.ngEsc);
+					});
+					event.preventDefault();
+				}
+			});
+		};
+	});
+	// enter Event
+	superlucky.directive('ngEnter', function () {
+		return function (scope, element, attrs) {
+			element.bind("keydown keypress", function (event) {
+				if(event.which === 13) {
+					scope.$apply(function (){
+						scope.$eval(attrs.ngEnter);
+					});
+					event.preventDefault();
+				}
+			});
+		};
+	});
+
+</script>
+
+</head>
+
+<body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">TYPINGIO</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container mainpage">
+      <div ng-controller="typingController">
+
+        <br>
+
+        <!-- NAVI -->
+        <button type="button" class="btn btn-xs btn-primary" ng-disabled="replay_btn"  ng-show="complate"  ng-click="play($event)">RePlay</button>
+        <button type="button" class="btn btn-xs btn-primary"  ng-click="next($event)">Next</button>
+        <button type="button" class="btn btn-xs btn-primary"  ng-click="restart($event)">Restart</button>
+
+        <input type="text" id="ng_target" ng-model="keytarget" ng-keypress="key_press($event)" ng-keydown="key_down($event)" ng-blur="key_blur($event)" class="hidden_box">
+        <!--input type="text" ng-model="keycode"-->
+        <!--input type="text" id="timecnt"-->
+        <span>&nbsp;</span>
+        <span>&nbsp;</span>
+        <span>Time : <span id='timecnt'></span></span>
+        <span>&nbsp;</span>
+        <span>KeyCode : {{ keycode }}</span>
+
+        <br>
+        <br>
+
+        <!-- TYPING AREA -->
+        <div ng-click="focus_cursor()" class="focus_click" >
+          <div id="typing_area">
+          </div>
+        </div>
+
+        <!-- DIALOG -->
+        <div ng-controller="dialogController" style="display:none">
+        <script type="text/ng-template" id="dialog_comm">
+          <div class="modal-header">
+            <h3 class="modal-title">RESULT</h3>
+          </div>
+          <div class="modal-body">
+            <p>spend_time : {{ record_time }} second</p>
+            <p>active_count : {{ active_count }} character</p>
+            <p>character per minute : {{ cpm }} cpm</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="play()">REPLAY</button>
+            <button class="btn btn-primary" ng-click="next()">NEXT</button>
+            <button class="btn btn-primary" ng-click="close()">CLOSE</button>
+          </div>
+        </script>
+        </div>
+
+
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Place sticky footer content here.</p>
+      </div>
+    </footer>
+
+
+
+<script src="/asset/js/controller/typing.js?v=<?php echo $version?>"></script>
+</body>
+</html>
